@@ -1,0 +1,172 @@
+Given a set of records, each one is (x, y) where x is a vector, y lable (-2, -1, 0, 1, 2). 
+
+find w to maximize correlation(sum_i xi * wi, y)
+
+Pearson Correlation 
+
+  Cor(Z, Y) 
+= Cov(Z, Y) / (std(Z) * std(Y))
+= E( (Z - uZ) * (Y - uY) ) / std(Z) / std(Y)
+= (E(Z*Y) - uX*uY) / std(X) std(Y)
+
+std(Y) is known, remove
+uY is known as well
+
+max (E(Z*Y) - E(Z)*uY) / std(Z)
+  = ((1/n)sum_i Zi*yi - (1/n)sum_i Zi * uY) / sqrt((1/n) sum_i Zi^2 - ((1/n) sum_i Zi)^2)
+  = (sum_i Zi*yi - sum_i Zi * uY) / sqrt(n * sum_i Zi^2 - (sum_i Zi)^2)
+  = sum_i Zi*(yi - uY) / sqrt(n * sum_i Zi^2 - (sum_i Zi)^2)
+
+Z = X * W
+
+Zi = sum_j xij * wj
+yi - uY = yi'
+
+max (E(Z*Y) - E(Z)*uY) / std(Z)
+  = sum_i Zi*yi' / sqrt(n * sum_i Zi^2 - (sum_i Zi)^2)
+
+
+  E(X * Y) 
+= sum_i E(X * Y) 
+= sum_i sum_j xij * wj * yi 
+= sum_j wj * (sum_i xij * yi)
+
+  E(X) 
+= sum_i (sum_j xij * wj)
+
+uY = sum_j wj
+std(Y) = 1
+
+(sum_j wj * (sum_i xij * yi) - sum_i (sum_j xij * wj) sum_j wj) / std(X)
+
+
+Correlation of X*W and Y: 0.7174, Objective: 0.8124
+[-2.0704, -1.1591, -1.8007, -0.4742, 0.0297, 0.3372, 0.3603, 0.4912, -0.6811, 0.546, 1.3548, -0.0349, 0.9082]
+
+# for those 271 records, 4 have redundant iguids, need to remove them 
+
+# split this file into two, one with 263, another with 8 where each one is redundant
+
+qs_reformulation
+qs_abandonment
+qs_quickretry
+ad_click
+dd_ldt_clk
+alg_ldt_clk
+ad_ldt_clk	
+dd_norm_clk
+alg_norm_clk
+ad_norm_clk
+dd_sdt_clk
+alg_sdt_clk
+ad_sdt_clk
+
+0ac14fbf0a33454c8200000000cd1bcc	0	0	0	0	0	1	0	0	0	0	0	0	0
+0ac14fbf0a33454c8200000000cd1bcc	1	0	0	0	0	0	0	0	0	0	0	0	0
+alg_ldt_clk (6) vs qs_reformulation (1)
+
+
+0ad31d0df108438a9d000000007487ca	0	0	0	0	0	1	0	0	0	0	0	0	0
+0ad31d0df108438a9d000000007487ca	0	0	1	0	0	0	0	0	0	0	0	0	0
+alg_ldt_clk (6) vs qs_quickretry (3)
+
+
+448ef33fb8a4407a8800000000732f9b	0	0	1	0	0	0	0	0	0	0	0	0	0
+448ef33fb8a4407a8800000000732f9b	0	1	0	0	0	0	0	0	0	0	0	0	0
+qs_quickretry (3) vs qs_abandonment (2)
+
+
+iter 6439, Correlation of X*W and Y: 0.6922
+Reformulation	       -1.6961
+Abandonment   	       -0.9226
+QuickRetry    	       -1.4683
+Ldt_Clk	      	       0.1804
+Norm_CLK      	       -0.3005
+Sdt_Clk	      	       -0.0195
+
+based on 264 records (271 - 8 + 1, for those 4 duplicates, 1 has the same vector)
+iter 6241, Correlation of X*W and Y: 0.7046, Objective: 0.7848
+-1.7156	   qs_reformulation
+-0.8056	   qs_abandonment
+-1.5147	   qs_quickretry
+0.187	   ldt_clk
+-0.2928	   norm_clk
+-0.0149	   sdt_clk
+
+correlation of X*W and Y:	0.7296
+-2.1021	    qs_reformulation
+-1.0144	    qs_abandonment
+-1.8634	    qs_quickretry
+-0.455	    ad_click
+0.0469	    dd_ldt_clk
+0.3429	    alg_ldt_clk
+0.3609	    ad_ldt_clk
+0.489	    dd_norm_clk
+-0.6695	    alg_norm_clk
+0.5316	    ad_norm_clk
+1.3571	    dd_sdt_clk
+-0.0291	    alg_sdt_clk
+0.9041	    ad_sdt_clk
+
+
+
+correlation of X*W and Y:	0.7194
+-7.9121	    4.5937 qs_reformulation
+-4.2317	    4.26   qs_abandonment
+-6.9826	    5.1022 qs_quickretry
+1.5818	    3.3914 ad_click
+-1.7039	    4.4677 dd_ldt_clk
+1.0	    1.0	   alg_ldt_clk
+-2.3278	    5.4914 ad_ldt_clk
+0.6387	    0.414  dd_norm_clk
+-2.2992	    4.7536 alg_norm_clk
+-1.4897	    3.5758 ad_norm_clk
+-2.6561	    3.5793 dd_sdt_clk
+-0.1813	    2.5099 alg_sdt_clk
+-3.0441	    3.5901 ad_sdt_clk
+
+correlation of X*W and Y:	0.7046
+-9.1323	    0.2455 qs_reformulation
+-4.2713	    0.2931 qs_abandonment
+-8.038	    1.2666 qs_quickretry
+1.0	    1.0	   ldt_clk
+-1.5578	    1.5196 norm_clk
+-0.0778	    1.311  sdt_clk
+
+-------------------
+label_ux_mix300 only has 251 records
+
+C02T21HUG8WL-lm:correlation yunhongz$ python correlation_max.py QS_data/label_ux_mix300 
+correlation of X*W and Y:   0.681
+-3.9077	    1.0568 qs_reformulation
+-1.7715	    0.6563 qs_abandonment
+-4.5574	    0.8984 qs_quickretry
+0.0614	    0.9366 ad_click
+1.5569	    1.1238 dd_ldt_clk
+1.0	    1.0	   alg_ldt_clk
+0.8068	    1.1017 ad_ldt_clk
+0.7608	    0.301  dd_norm_clk
+-1.4361	    0.1795 alg_norm_clk
+1.3405	    0.6759 ad_norm_clk
+1.6748	    0.6752 dd_sdt_clk
+0.1167	    0.6783 alg_sdt_clk
+1.7712	    0.7141 ad_sdt_clk
+
+correlation of X*W and Y:	0.6503
+-3.9308	    4.5607 qs_reformulation
+-1.952	    6.2859 qs_abandonment
+-3.9684	    2.2115 qs_quickretry
+1.0	    1.0	   ldt_clk
+-0.8815	    5.0396 norm_clk
+-2.344	    4.8523 sdt_clk
+
+
+--------------
+
+regarding adding an externality to LocalDD m for LDT
+first calculate how many QS have localdd LDT
+then use a bruteforce method to find the optimal value of m to maximize the correlation with judgement
+
+iguid, qs_reformulation, qs_abandonment, qs_quickretry, ad_click, dd_ldt_clk, alg_ldt_clk, ad_ldt_clk, dd_norm_clk, alg_norm_clk, ad_norm_clk, dd_sdt_clk, alg_sdt_clk, ad_sdt_clk, local_dd_ldt_clk,news_dd_ldt_clk,img_dd_ldt_clk,video_dd_ldt_clk,kg_dd_ldt_clk,nav_dd_ldt_clk,local_dd_norm_clk,news_dd_norm_clk,img_dd_norm_clk,video_dd_norm_clk,kg_dd_norm_clk,nav_dd_norm_clk,local_dd_sdt_clk,news_dd_sdt_clk,img_dd_sdt_clk,video_dd_sdt_clk,kg_dd_sdt_clk,nav_dd_sdt_clk
+
+column_field = 15
